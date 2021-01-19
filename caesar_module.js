@@ -1,4 +1,14 @@
-// Caeser Module - JS
+/**
+ * Name: Caesar Cipher module
+ * Created by: Altar (AltariasMainAccount on GitHub)
+ * Created on: 18.01.2021 (Version 1)
+ * Last Updated: 19.01.2021 (Version 2)
+ * 
+ * Update Notes:
+ * Fixed Bug where symbols would convert to whitespace
+ * Changed some for loops into forEach loops
+ * 
+ */
 let ascii_big = {
     "A": 65,
     "B": 66,
@@ -66,6 +76,11 @@ ascii_big = 97 - 122
 
 module.exports = {
     encode: function(string, shift) {
+        // In case the user forgets to put a shift
+        if(!shift) {
+            console.log("Shift Value not given, using default (2)")
+            shift = 2;
+        }
         // Prepare the variables
         let buffer;
         let pre_arr = string.split('');
@@ -73,16 +88,17 @@ module.exports = {
         let end_arr = [];
         let end_string;
         // Iterate over the array of the string to get the ascii_arr
-        for (i = 0; i < pre_arr.length; i++) {
-            if (pre_arr[i] in ascii_big) {
-                ascii_arr.push(ascii_big[pre_arr[i]]);
-            } else if (pre_arr[i] in ascii_small) {
-                ascii_arr.push(ascii_small[pre_arr[i]]);
+        pre_arr.forEach(element => {
+            if (element in ascii_big) {
+                ascii_arr.push(ascii_big[element]);
+            } else if (element in ascii_small) {
+                ascii_arr.push(ascii_small[element]);
             } else {
-                ascii_arr.push(32); // In case of a whitespace
+                ascii_arr.push(element); // In case of a whitespace
             }
-        }
+        })
         // Now shift the ascii variables by the shift
+        // Here we cannot use a forEach because it won't shift element
         for (i = 0; i < ascii_arr.length; i++) {
             if (ascii_arr[i] === 32) { 
                 ascii_arr[i] = ascii_arr[i];
@@ -112,20 +128,26 @@ module.exports = {
                 }
             }
         }
+
         // At the end, construct the end array and the end string
-        for (i = 0; i < ascii_arr.length; i++) {
-            if (Object.values(ascii_big).includes(ascii_arr[i])) {
-                end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === ascii_arr[i]));
-            } else if (pre_arr[i] in ascii_small) {
-                end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === ascii_arr[i]));
+        ascii_arr.forEach(element => {
+            if (Object.values(ascii_big).includes(element)) {
+                end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === element));
+            } else if (Object.values(ascii_small).includes(element)) {
+                end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === element));
             } else {
-                end_arr.push(" "); // Again, in case of a whitespace
+                end_arr.push(element); // Again, in case of a symbol
             }            
-        }
+        })
         end_string = end_arr.join('');
         console.log(end_string);
     },
     decode: function(string, shift) {
+        if(!shift) {
+            console.log("Shift Value not given, using default (2)")
+            console.log("If you do not know the shift value, use crack() instead")
+            shift = 2;
+        }
         // Prepare the variables
         let buffer;
         let pre_arr = string.split('');
@@ -133,15 +155,15 @@ module.exports = {
         let end_arr = [];
         let end_string;
         // Iterate over the array of the string to get the ascii_arr
-        for (i = 0; i < pre_arr.length; i++) {
-            if (pre_arr[i] in ascii_big) {
-                ascii_arr.push(ascii_big[pre_arr[i]]);
-            } else if (pre_arr[i] in ascii_small) {
-                ascii_arr.push(ascii_small[pre_arr[i]]);
+        pre_arr.forEach(element => {
+            if (element in ascii_big) {
+                ascii_arr.push(ascii_big[element]);
+            } else if (element in ascii_small) {
+                ascii_arr.push(ascii_small[element]);
             } else {
-                ascii_arr.push(32); // In case of a whitespace
+                ascii_arr.push(element);
             }
-        }
+        })
         // Now shift the ascii variables by the shift
         for (i = 0; i < ascii_arr.length; i++) {
             if (ascii_arr[i] === 32) { 
@@ -173,15 +195,15 @@ module.exports = {
             }
         }
         // At the end, construct the end array and the end string
-        for (i = 0; i < ascii_arr.length; i++) {
-            if (Object.values(ascii_big).includes(ascii_arr[i])) {
-                end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === ascii_arr[i]));
-            } else if (pre_arr[i] in ascii_small) {
-                end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === ascii_arr[i]));
+        ascii_arr.forEach(element => {
+            if (Object.values(ascii_big).includes(element)) {
+                end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === element));
+            } else if (Object.values(ascii_small).includes(element)) {
+                end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === element));
             } else {
-                end_arr.push(" "); // Again, in case of a whitespace
+                end_arr.push(element); // Again, in case of a symbol
             }            
-        }
+        })
         end_string = end_arr.join('');
         console.log(end_string);
     },
@@ -193,15 +215,15 @@ module.exports = {
         let end_arr = [];
         let end_string;
         // Iterate over the array of the string to get the ascii_arr
-        for (i = 0; i < pre_arr.length; i++) {
-            if (pre_arr[i] in ascii_big) {
-                ascii_arr.push(ascii_big[pre_arr[i]]);
-            } else if (pre_arr[i] in ascii_small) {
-                ascii_arr.push(ascii_small[pre_arr[i]]);
+        pre_arr.forEach(element => {
+            if (element in ascii_big) {
+                ascii_arr.push(ascii_big[element]);
+            } else if (element in ascii_small) {
+                ascii_arr.push(ascii_small[element]);
             } else {
-                ascii_arr.push(32); // In case of a whitespace
+                ascii_arr.push(element);
             }
-        }
+        })
         // Bruteforce all possible keys
         for (x = 0; x < 25; x++) {
             bf_arr = ascii_arr;
@@ -235,15 +257,15 @@ module.exports = {
                     }
                 }
             }
-            for (i = 0; i < bf_arr.length; i++) {
-                if (Object.values(ascii_big).includes(bf_arr[i])) {
-                    end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === bf_arr[i]));
-                } else if (pre_arr[i] in ascii_small) {
-                    end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === bf_arr[i]));
+            bf_arr.forEach(element => {
+                if (Object.values(ascii_big).includes(element)) {
+                    end_arr.push(Object.keys(ascii_big).find(key => ascii_big[key] === element));
+                } else if (Object.values(ascii_small).includes(element)) {
+                    end_arr.push(Object.keys(ascii_small).find(key => ascii_small[key] === element));
                 } else {
-                    end_arr.push(" "); // Again, in case of a whitespace
+                    end_arr.push(element); // Again, in case of a symbol
                 }            
-            }
+            })
             // Output the end result
             end_string = end_arr.join('');
             console.log("Alphabet shifted by " + (x + 1) + " - Result - " + end_string);

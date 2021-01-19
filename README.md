@@ -3,8 +3,11 @@ This is a module that allows you to encode, decode and crack strings
 using the caesar cipher pattern.
 
 ### 3 Functions
+The 2 main functions are:
 - `encode(string, int shift)` - encodes a string by shifting the alphabet by shift
-- `decode(string, int shift)` - decodes a string by reversing the encoder with shift
+- `decode(string, int shift)` - decodes a string by reversing the encoder with shift. If no shift given it will default to 2.
+
+There is an extra function called:
 - `crack(string)` - gives an output of all 25 possible shift variations, the right one is surely within these (use if you don't know the shift with decode)
 
 ### How to use
